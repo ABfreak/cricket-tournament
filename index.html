@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<title>Cricket Tournament Registration</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background: #0f2238;
+    color: #f1f1f1;
+    overflow-x: hidden;
+  }
+  header {
+    background: #16375d;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    position: sticky;
+    top: 0;  
+    z-index: 10;
+    border-bottom: 4px solid #f9b234;
+  }
+  header h1 {
+    margin: 0;
+    font-weight: 700;
+    color: #f9b234;
+    letter-spacing: 2px;
+  }
+  nav {
+    display: flex;
+    justify-content: center;
+    background: #1d2e4a;
+  }
+  nav button {
+    background: transparent;
+    border: none;
+    padding: 1rem 1.5rem;
+    font-weight: 700;
+    color: #f1f1f1;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+  }
+  nav button:hover,
+  nav button.active {
+    background: #f9b234;
+    color: #0f2238;
+  }
+  main {
+    max-width: 370px;
+    margin: 1rem auto 3rem auto;
+    background: #112538cc;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgb(0 0 0 / 0.5);
+    padding: 1rem 1.25rem 2rem;
+  }
+  /* Tournament Info Style */
+  #tournament-info {
+    text-align: center;
+  }
+  #tournament-info h2 {
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
+    color: #f9b234;
+    text-shadow: 2px 2px 5px #0008;
+  }
+  #tournament-info p {
+    margin: 0.25rem 0 1rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+    text-shadow: 1px 1px 3px #0008;
+  }
+  #tournament-info .images {
+    position: relative;
+    height: 200px;
+    margin-top: 0.5rem;
+  }
+  #tournament-info .images img {
+    bottom: 0;
+    max-height: 160px;
+    opacity: 0.85;
+  }
+  #tournament-info .cricket-stump {
+    left: 10px;
+    height: 140px;
+  }
+  #tournament-info .cricket-ball {
+    right: 15px;
+    height: 70px;
+    top: 30px;
+  }
+  #tournament-info .custom-organizer-image {
+    text-align: center;
+    height: 100px;
+  }
+
+  /* Registration Form */
+  form {
+    margin-top: 0.5rem;
+  }
+  label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    margin-top: 1rem;
+    color: #f9b234;
+  }
+  input[type="text"],
+  input[type="file"] {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+  }
+  input[type="text"]::placeholder {
+    font-style: italic;
+    color: #aaa;
+  }
+  .players-list {
+    margin-top: 0.25rem;
+  }
+  .players-list input {
+    margin: 0.2rem 0;
+  }
+  button.add-player-btn {
+    background: #f9b234;
+    border: none;
+    color: #0f2238;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button.add-player-btn:hover {
+    background: #d59b1e;
+  }
+  .fee {
+    font-weight: 700;
+    color: #f9b234;
+    margin-top: 1rem;
+    font-size: 1.25rem;
+    letter-spacing: 1.5px;
+  }
+  button.pay-btn {
+    background: #28a745;
+    border: none;
+    color: #fff;
+    font-weight: 900;
+    font-size: 1.2rem;
+    margin-top: 1.25rem;
+    padding: 0.8rem;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button.pay-btn:hover {
+    background: #218838;
+  }
+
+  .logo-preview {
+    margin-top: 0.5rem;
+    max-width: 120px;
+    max-height: 120px;
+    border-radius: 8px;
+    border: 1px solid #666;
+    object-fit: contain;
+    background: #071025;
+  }
+
+  /* Payment success and messages */
+  .payment-confirmation {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #28a745cc;
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  /* Match Details */
+  #match-details {
+    font-size: 1rem;
+  }
+  #teams-list, #match-schedule {
+    margin-top: 0.5rem;
+  }
+  #teams-list h3,
+  #match-schedule h3 {
+    color: #f9b234;
+    border-bottom: 2px solid #f9b234;
+    padding-bottom: 0.2rem;
+    margin-bottom: 0.4rem;
+  }
+  .team-item {
+    background: #16375d;
+    padding: 0.6rem 0.8rem;
+    margin: 0.3rem 0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .team-logo-small {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 6px;
+    border: 1px solid #666;
+    background: #071025;
+  }
+  .team-info {
+    flex-grow: 1;
+    color: #f1f1f1;
+  }
+  .match-item {
+    background: #112538;
+    padding: 0.5rem 0.8rem;
+    margin: 0.3rem 0;
+    border-radius: 6px;
+  }
+
+  /* Responsive Constraints for mobile fit */
+  @media (max-width: 380px) {
+    main {
+      max-width: 320px;
+    }
+    nav button {
+      padding: 0.75rem 1rem;
+      font-size: 0.9rem;
+    }
+  }
+
+</style>
+</head>
+<body>
+<header>
+  <h1>Cricket Tournament 2025</h1>
+</header>
+<nav aria-label="Primary">
+  <button id="tab-info" class="active" aria-controls="tournament-info" aria-selected="true" role="tab">Tournament Info</button>
+  <button id="tab-register" aria-controls="register-team" aria-selected="false" role="tab">Register Team</button>
+  <button id="tab-matches" aria-controls="match-details" aria-selected="false" role="tab">Match Details</button>
+</nav>
+<main>
+  <section id="tournament-info" role="tabpanel" aria-labelledby="tab-info" tabindex="0">
+    <h2>Annual Cricket Championship</h2>
+    <p><strong>Date:</strong> staring may 25 - July , 2025</p>
+    <p><strong>Time:</strong> Matches start at 6:00 AM daily</p>
+    <div class="images" aria-hidden="true">
+      <img class="organizer-image" src="C:\Users\anayb\Downloads\WhatsApp Image 2025-05-07 at 17.06.53_0ce0d9dc.jpg" alt="Organizer" />
+    </div>
+    <p style="margin-top:1rem; font-style: italic; color: #ddd;">Hosted by Cricket lover assoication (Aditya thakur)</p>
+  </section>
+
+  <section id="register-team" role="tabpanel" aria-labelledby="tab-register" tabindex="-1" hidden>
+    <form id="registration-form" novalidate>
+      <label for="team-name">Team Name *</label>
+      <input type="text" id="team-name" name="team-name" placeholder="Enter your team name" required maxlength="30" autocomplete="off"/>
+      
+      <label for="captain-name">Captain Name *</label>
+      <input type="text" id="captain-name" name="captain-name" placeholder="Enter captain's full name" required maxlength="30" autocomplete="off" />
+      
+      <label>Player Names (minimum 11 ,max 12 ) *</label>
+      <div class="players-list" id="players-list">
+        <input type="text" placeholder="Player 1 name" required maxlength="30" autocomplete="off" />
+        <input type="text" placeholder="Player 2 name" required maxlength="30" autocomplete="off" />
+        <input type="text" placeholder="Player 3 name" required maxlength="30" autocomplete="off" />
+        <input type="text" placeholder="Player 4 name" required maxlength="30" autocomplete="off" />
+        <input type="text" placeholder="Player 5 name" required maxlength="30" autocomplete="off" />
+        <input type="text" placeholder="Player 6 name" required maxlength="30" autocomplete="off" />
+        <input type="text" placeholder="Player 7 name" required maxlength="30" autocomplete="off" />
+        <input type="text" placeholder="Player 8 name" required maxlength="30" autocomplete="off" />
+        <input type="text" placeholder="Player 9 name" required maxlength="30" autocomplete="off" />
+        <input type="text" placeholder="Player 10 name" required maxlength="30" autocomplete="off" />
+        <input type="text" placeholder="Player 11 name" required maxlength="30" autocomplete="off" />
+      </div>
+      <button type="button" class="add-player-btn" id="add-player-btn" aria-label="Add player">+ Add Player</button>
+
+      <label for="team-logo">Select Team Logo (PNG, JPG)</label>
+      <input type="file" id="team-logo" name="team-logo" accept="image/png, image/jpeg" aria-describedby="logo-help"/>
+      <small id="logo-help" style="color:#aaa;">Logo will be shown in match details</small>
+      <img id="logo-preview" class="logo-preview" alt="Team Logo Preview" src="#" hidden />
+
+      <div class="fee">Registration Fee: ₹2200 per team</div>
+
+      <button type="submit" class="pay-btn" aria-label="Pay registration fee and register team">Pay & Register</button>
+      <div id="payment-message" role="alert" aria-live="polite" style="margin-top:1rem;"></div>
+    </form>
+  </section>
+
+  <section id="match-details" role="tabpanel" aria-labelledby="tab-matches" tabindex="-1" hidden>
+    <div id="teams-list">
+      <h3>Registered Teams</h3>
+      <div id="teams-container" aria-live="polite">
+        <p>No teams registered yet.</p>
+      </div>
+    </div>
+    <div id="match-schedule">
+      <h3>Match Schedule</h3>
+      <div id="matches-container" aria-live="polite">
+        <p>No matches scheduled yet.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Navigation tabs
+  const tabs = {
+    info: document.getElementById('tab-info'),
+    register: document.getElementById('tab-register'),
+    matches: document.getElementById('tab-matches'),
+  };
+  const panels = {
+    info: document.getElementById('tournament-info'),
+    register: document.getElementById('register-team'),
+    matches: document.getElementById('match-details'),
+  };
+
+  function switchTab(newTab) {
+    Object.keys(tabs).forEach(tab => {
+      if (tab === newTab) {
+        tabs[tab].classList.add('active');
+        tabs[tab].setAttribute('aria-selected', 'true');
+        panels[tab].hidden = false;
+        panels[tab].setAttribute('tabindex', '0');
+      } else {
+        tabs[tab].classList.remove('active');
+        tabs[tab].setAttribute('aria-selected', 'false');
+        panels[tab].hidden = true;
+        panels[tab].setAttribute('tabindex', '-1');
+      }
+    });
+  }
+
+  tabs.info.onclick = () => switchTab('info');
+  tabs.register.onclick = () => switchTab('register');
+  tabs.matches.onclick = () => switchTab('matches');
+
+  // Registration form handling
+
+  const form = document.getElementById('registration-form');
+  const playersList = document.getElementById('players-list');
+  const addPlayerBtn = document.getElementById('add-player-btn');
+  const logoInput = document.getElementById('team-logo');
+  const logoPreview = document.getElementById('logo-preview');
+  const paymentMessage = document.getElementById('payment-message');
+
+  const MIN_PLAYERS = 5;
+  const MAX_PLAYERS = 11;
+
+  // Add player input dynamically
+  addPlayerBtn.addEventListener('click', () => {
+    const currentPlayers = playersList.querySelectorAll('input').length;
+    if(currentPlayers >= MAX_PLAYERS) {
+      alert(`Maximum ${MAX_PLAYERS} players allowed.`);
+      return;
+    }
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = `Player ${currentPlayers + 1} name`;
+    input.required = true;
+    input.maxLength = 30;
+    input.autocomplete = 'off';
+    playersList.appendChild(input);
+  });
+
+  // Logo preview when file selected
+  logoInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        logoPreview.src = ev.target.result;
+        logoPreview.hidden = false;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      logoPreview.src = '';
+      logoPreview.hidden = true;
+    }
+  });
+
+  // Storage key for teams
+  const STORAGE_KEY = 'cric_tournament_teams';
+
+  // Helper: get teams from localStorage
+  function getTeams() {
+    const teams = localStorage.getItem(STORAGE_KEY);
+    return teams ? JSON.parse(teams) : [];
+  }
+
+  // Helper: save teams to localStorage
+  function saveTeam(team) {
+    const teams = getTeams();
+    teams.push(team);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(teams));
+  }
+
+  // Form submit handler
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    paymentMessage.textContent = '';
+    const teamName = form['team-name'].value.trim();
+    const captainName = form['captain-name'].value.trim();
+
+    if (!teamName || !captainName) {
+      paymentMessage.style.color = 'red';
+      paymentMessage.textContent = 'Team name and Captain name are required.';
+      return;
+    }
+
+    const playerInputs = playersList.querySelectorAll('input');
+    if (playerInputs.length < MIN_PLAYERS) {
+      paymentMessage.style.color = 'red';
+      paymentMessage.textContent = `Please enter at least ${MIN_PLAYERS} players.`;
+      return;
+    }
+
+    let players = [];
+    for (let input of playerInputs) {
+      if(input.value.trim() === '') {
+        paymentMessage.style.color = 'red';
+        paymentMessage.textContent = 'All player names must be filled.';
+        return;
+      }
+      players.push(input.value.trim());
+    }
+
+    // Team logo (optional)
+    let teamLogoDataUrl = '';
+    const logoFile = logoInput.files[0];
+    if (logoFile) {
+      teamLogoDataUrl = logoPreview.src;
+    }
+
+    // Simulating payment flow
+    paymentMessage.style.color = '#f9b234';
+    paymentMessage.textContent = 'Processing payment... Please wait.';
+
+    // Simulate 2 seconds payment delay
+    setTimeout(() => {
+      // After payment success:
+      const teamData = {
+        id: Date.now(),
+        teamName,
+        captainName,
+        players,
+        logo: teamLogoDataUrl,
+        feePaid: 2200
+      };
+      saveTeam(teamData);
+      paymentMessage.style.color = '#28a745';
+      paymentMessage.textContent = `Payment successful! Team "${teamName}" registered successfully.`;
+      form.reset();
+      logoPreview.hidden = true;
+      // Reset players to 5 inputs default
+      while(playersList.firstChild) playersList.removeChild(playersList.firstChild);
+      for(let i=1; i<=MIN_PLAYERS; i++) {
+        let inp = document.createElement('input');
+        inp.type = 'text';
+        inp.placeholder = `Player ${i} name`;
+        inp.required = true;
+        inp.maxLength = 30;
+        inp.autocomplete = 'off';
+        playersList.appendChild(inp);
+      }
+      updateTeamsList();
+      updateMatchSchedule();
+      switchTab('matches');
+    }, 2000);
+  });
+
+
+  // Display registered teams in match details section
+  function updateTeamsList() {
+    const container = document.getElementById('teams-container');
+    const teams = getTeams();
+    if (teams.length === 0) {
+      container.innerHTML = '<p>No teams registered yet.</p>';
+      return;
+    }
+    container.innerHTML = '';
+    teams.forEach(team => {
+      const div = document.createElement('div');
+      div.classList.add('team-item');
+      const logoImg = document.createElement('img');
+      logoImg.className = 'team-logo-small';
+      logoImg.alt = `${team.teamName} logo`;
+      logoImg.src = team.logo || 'https://img.icons8.com/ios-filled/50/f9b234/cricket-bat.png';
+      const infoDiv = document.createElement('div');
+      infoDiv.className = 'team-info';
+      infoDiv.innerHTML = `<strong>${team.teamName}</strong><br/>Captain: ${team.captainName}`;
+      div.appendChild(logoImg);
+      div.appendChild(infoDiv);
+      container.appendChild(div);
+    });
+  }
+
+  // Generate match schedule with simple round robin between teams
+  function updateMatchSchedule() {
+    const container = document.getElementById('matches-container');
+    const teams = getTeams();
+    if (teams.length < 2) {
+      container.innerHTML = '<p>Not enough teams registered to schedule matches.</p>';
+      return;
+    }
+    // Generate round-robin matches
+    let matches = [];
+    for (let i = 0; i < teams.length; i++) {
+      for (let j = i + 1; j < teams.length; j++) {
+        matches.push({teamA: teams[i].teamName, teamB: teams[j].teamName});
+      }
+    }
+    container.innerHTML = '';
+    matches.forEach((match, idx) => {
+      const div = document.createElement('div');
+      div.className = 'match-item';
+      div.textContent = `Match ${idx + 1}: ${match.teamA} vs ${match.teamB}`;
+      container.appendChild(div);
+    });
+  }
+
+  // Initialize default players inputs on load
+  function initDefaultPlayers() {
+    playersList.innerHTML = '';
+    for(let i=1; i<=MIN_PLAYERS; i++) {
+      let inp = document.createElement('input');
+      inp.type = 'text';
+      inp.placeholder = `Player ${i} name`;
+      inp.required = true;
+      inp.maxLength = 30;
+      inp.autocomplete = 'off';
+      playersList.appendChild(inp);
+    }
+  }
+
+  // Initialization
+  window.onload = () => {
+    initDefaultPlayers();
+    updateTeamsList();
+    updateMatchSchedule();
+  };
+</script>
+</body>
+</html>
+</content>
+</create_file>
